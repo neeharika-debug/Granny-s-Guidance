@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Granny's Guidance 🧶</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════
+       CSS VARIABLES & RESET
+    ═══════════════════════════════════════════ */
+    :root {
+      --cream: #fdf6ee;
+      --beige: #f5e6d3;
+      --beige-mid: #ecdcc8;
+      --pink: #e8b4c8;
+      --pink-light: #f5dde8;
+      --pink-dark: #c47a9a;
+      --lavender: #c9b8e8;
+      --lavender-light: #ede6f8;
+      --lavender-dark: #8b6bb5;
+      --sage: #a8c5a0;
+      --sage-light: #daefd6;
+      --sage-dark: #5a8a52;
+      --brown: #5c3d2e;
+      --brown-mid: #7a5544;
+      --brown-light: #a67c64;
+      --white: #fffdf9;
+      --shadow: rgba(92, 61, 46, 0.10);
+      --shadow-md: rgba(92, 61, 46, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--cream);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════
+       BACKGROUND TEXTURE (crochet-inspired)
+    ═══════════════════════════════════════════ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.06;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 28px, var(--brown) 28px, var(--brown) 30px),
+        repeating-linear-gradient(90deg, transparent, transparent 28px, var(--brown) 28px, var(--brown) 30px),
+        radial-gradient(circle 10px at 15px 15px, var(--brown) 4px, transparent 4px),
+        radial-gradient(circle 10px at 45px 15px, var(--brown) 4px, transparent 4px),
+        radial-gradient(circle 10px at 15px 45px, var(--brown) 4px, transparent 4px),
+        radial-gradient(circle 10px at 45px 45px, var(--brown) 4px, transparent 4px);
+      background-size: 60px 60px;
+      z-index: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════ */
+    .app-wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 780px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ═══════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════ */
+    .header {
+      background: var(--white);
+      border-bottom: 1.5px solid var(--beige-mid);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px var(--shadow);
+      flex-shrink: 0;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--pink-light), var(--lavender-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .logo-text {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-tagline {
+      font-size: 0.72rem;
+      color: var(--brown-light);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-reset {
+      background: var(--beige);
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--brown-mid);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-reset:hover {
+      background: var(--pink-light);
+      border-color: var(--pink);
+      color: var(--pink-dark);
+      transform: scale(1.03);
+    }
+
+    /* ═══════════════════════════════════════════
+       CHAT AREA
+    ═══════════════════════════════════════════ */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 20px 10px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-area::-webkit-scrollbar { width: 5px; }
+    .chat-area::-webkit-scrollbar-track { background: transparent; }
+    .chat-area::-webkit-scrollbar-thumb { background: var(--beige-mid); border-radius: 10px; }
+
+    /* ─── Message row ─── */
+    .msg-row {
+      display: flex;
+      margin-bottom: 16px;
+      animation: fadeSlideIn 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-row.user   { justify-content: flex-end; }
+    .msg-row.bot    { justify-content: flex-start; align-items: flex-end; }
+
+    /* ─── Avatar ─── */
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-right: 8px;
+      background: linear-gradient(135deg, var(--pink-light), var(--lavender-light));
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    /* ─── Bubble ─── */
+    .bubble {
+      max-width: 72%;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .bubble.user-bubble {
+      background: linear-gradient(135deg, var(--lavender-light), var(--pink-light));
+      border: 1.5px solid var(--lavender);
+      border-bottom-right-radius: 4px;
+      color: var(--brown);
+    }
+
+    .bubble.bot-bubble {
+      background: var(--white);
+      border: 1.5px solid var(--beige-mid);
+      border-bottom-left-radius: 4px;
+      color: var(--brown);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    /* Formatted text inside bot bubble */
+    .bubble.bot-bubble strong {
+      color: var(--pink-dark);
+      font-weight: 700;
+    }
+
+    .bubble.bot-bubble em {
+      color: var(--lavender-dark);
+    }
+
+    /* ─── Pattern card inside bubble ─── */
+    .pattern-card {
+      background: linear-gradient(135deg, var(--beige), var(--pink-light));
+      border: 1.5px solid var(--pink);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 10px 0 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pattern-card::before {
+      content: '🧶';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 18px;
+      opacity: 0.4;
+    }
+
+    .pattern-card-name {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 6px;
+      text-transform: capitalize;
+    }
+
+    .pattern-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+
+    .meta-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .pill-level {
+      background: var(--lavender-light);
+      color: var(--lavender-dark);
+      border: 1px solid var(--lavender);
+    }
+    .pill-time {
+      background: var(--sage-light);
+      color: var(--sage-dark);
+      border: 1px solid var(--sage);
+    }
+    .pill-diff {
+      background: var(--pink-light);
+      color: var(--pink-dark);
+      border: 1px solid var(--pink);
+    }
+    .pill-season {
+      background: #fff8e1;
+      color: #b07d00;
+      border: 1px solid #f0c040;
+    }
+
+    /* ─── Typing indicator ─── */
+    .typing-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 16px;
+      animation: fadeSlideIn 0.3s ease forwards;
+    }
+
+    .typing-bubble {
+      background: var(--white);
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 20px;
+      border-bottom-left-radius: 4px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .typing-label {
+      font-size: 0.78rem;
+      color: var(--brown-light);
+      font-style: italic;
+      margin-left: 4px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--pink);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; background: var(--lavender); }
+    .dot:nth-child(3) { animation-delay: 0.4s; background: var(--sage); }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%            { transform: translateY(-6px); }
+    }
+
+    /* ─── Welcome message ─── */
+    .welcome-msg {
+      text-align: center;
+      padding: 28px 16px 12px;
+      animation: fadeSlideIn 0.4s ease forwards;
+      opacity: 0;
+    }
+    .welcome-icon { font-size: 3rem; margin-bottom: 10px; }
+    .welcome-title {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 6px;
+    }
+    .welcome-sub { font-size: 0.85rem; color: var(--brown-light); line-height: 1.5; }
+
+    /* Quick suggestion chips */
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 0 10px;
+    }
+
+    .chip {
+      background: var(--white);
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brown-mid);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 4px var(--shadow);
+    }
+
+    .chip:hover {
+      background: var(--pink-light);
+      border-color: var(--pink);
+      color: var(--pink-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px var(--shadow-md);
+    }
+
+    /* ═══════════════════════════════════════════
+       INPUT AREA
+    ═══════════════════════════════════════════ */
+    .input-area {
+      background: var(--white);
+      border-top: 1.5px solid var(--beige-mid);
+      padding: 14px 18px 16px;
+      box-shadow: 0 -2px 12px var(--shadow);
+      flex-shrink: 0;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .input-field {
+      flex: 1;
+      background: var(--beige);
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 24px;
+      padding: 11px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem;
+      color: var(--brown);
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      max-height: 110px;
+      overflow-y: auto;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-field::placeholder { color: var(--brown-light); }
+
+    .input-field:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(232, 180, 200, 0.2);
+      background: var(--white);
+    }
+
+    .send-btn {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px var(--shadow-md);
+    }
+
+    .send-btn:hover { transform: scale(1.08); box-shadow: 0 4px 12px var(--shadow-md); }
+    .send-btn:active { transform: scale(0.95); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .input-hint {
+      font-size: 0.72rem;
+      color: var(--brown-light);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ═══════════════════════════════════════════
+       GRANNY MODAL (first-time welcome)
+    ═══════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(92, 61, 46, 0.35);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .modal-box {
+      background: var(--white);
+      border: 2px solid var(--beige-mid);
+      border-radius: 24px;
+      padding: 36px 32px 28px;
+      max-width: 440px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(92, 61, 46, 0.2);
+      animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--pink), var(--lavender), var(--sage));
+      border-radius: 24px 24px 0 0;
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-granny-icon {
+      font-size: 4rem;
+      margin-bottom: 12px;
+      display: block;
+      animation: gentleFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    .modal-title {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 16px;
+    }
+
+    .modal-text {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--brown-mid);
+      margin-bottom: 24px;
+    }
+
+    .modal-divider {
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--pink), var(--lavender));
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+
+    .btn-okay {
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      border: none;
+      border-radius: 24px;
+      padding: 12px 32px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(200, 140, 180, 0.35);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-okay:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 18px rgba(200, 140, 180, 0.45);
+    }
+
+    .btn-okay:active { transform: scale(0.97); }
+
+    /* ═══════════════════════════════════════════
+       TOAST NOTIFICATION
+    ═══════════════════════════════════════════ */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--brown);
+      color: var(--cream);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .bubble { max-width: 85%; }
+      .header { padding: 12px 16px; }
+      .chat-area { padding: 16px 12px 8px; }
+      .input-area { padding: 12px 14px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     GRANNY WELCOME MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="grannyModal">
+  <div class="modal-box">
+    <span class="modal-granny-icon">👵🏻</span>
+    <h2 class="modal-title">Hello, my child! 🧶</h2>
+    <div class="modal-divider"></div>
+    <p class="modal-text">
+      I am Granny and I am here to help you decide your crochet project.
+      This is for absolute beginners and intermediate crocheters.
+      Granny knows that it is hard to decide your projects in the initial stages —
+      you are just little cute children. But don't you worry, I am here and
+      always eager to help! 🌸
+    </p>
+    <button class="btn-okay" id="okayGrannyBtn">Okay, Granny! 🤗</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════════ -->
+<div class="app-wrapper">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-area">
+      <div class="logo-icon">🧶</div>
+      <div>
+        <div class="logo-text">Granny's Guidance</div>
+        <div class="logo-tagline">your crochet crafting guide ✨</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-reset" id="resetBtn">🔄 New Chat</button>
+    </div>
+  </header>
+
+  <!-- Chat Area -->
+  <div class="chat-area" id="chatArea">
+    <!-- Welcome screen shown on first load -->
+    <div class="welcome-msg" id="welcomeScreen">
+      <div class="welcome-icon">🌸</div>
+      <div class="welcome-title">What shall we make today?</div>
+      <div class="welcome-sub">
+        Tell Granny what you're looking for — a quick gift, a cozy winter project,<br>or just something cute to start with!
+      </div>
+      <div class="chips-row">
+        <button class="chip" onclick="sendChip('Quick beginner gift idea 🎁')">Quick beginner gift idea 🎁</button>
+        <button class="chip" onclick="sendChip('Cute plushie for a child 🐸')">Cute plushie for a child 🐸</button>
+        <button class="chip" onclick="sendChip('Something cozy for winter ❄️')">Something cozy for winter ❄️</button>
+        <button class="chip" onclick="sendChip('Fun summer bag 👜')">Fun summer bag 👜</button>
+        <button class="chip" onclick="sendChip('I want to make a wearable ✨')">I want to make a wearable ✨</button>
+        <button class="chip" onclick="sendChip('What can I finish in under 2 hours? ⏱')">Finish in under 2 hours ⏱</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <div class="input-row">
+      <textarea
+        class="input-field"
+        id="userInput"
+        placeholder="Ask Granny anything... e.g. 'I want a cute beginner plushie for gifting' 🧶"
+        rows="1"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" title="Send message" onclick="sendMessage()">
+        <span>🕊️</span>
+      </button>
+    </div>
+    <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ═══════════════════════════════════════════
+     CONFIG
+  ═══════════════════════════════════════════ */
+  const API_BASE = 'http://localhost:5000';
+  const SESSION_ID = 'session_' + Math.random().toString(36).slice(2);
+
+  /* ═══════════════════════════════════════════
+     GRANNY MODAL LOGIC
+  ═══════════════════════════════════════════ */
+  (function initModal() {
+    const modal = document.getElementById('grannyModal');
+    const btn   = document.getElementById('okayGrannyBtn');
+    const seen  = localStorage.getItem('grannySeen');
+
+    if (seen) {
+      modal.style.display = 'none';
+    } else {
+      modal.style.display = 'flex';
+    }
+
+    btn.addEventListener('click', () => {
+      localStorage.setItem('grannySeen', 'true');
+      modal.style.animation = 'none';
+      modal.style.opacity = '0';
+      modal.style.transition = 'opacity 0.25s ease';
+      setTimeout(() => { modal.style.display = 'none'; }, 280);
+      // Show opening bot message after modal closes
+      setTimeout(() => {
+        appendBotMessage("Hello, my dear! 🌸 I'm Granny, your cozy crochet companion. Tell me — what kind of project are you dreaming of today? Whether it's a quick gift, something warm for winter, or a cute little plushie, I'm here to guide you! 🧶");
+      }, 400);
+    });
+  })();
+
+  /* ═══════════════════════════════════════════
+     AUTO-RESIZE TEXTAREA
+  ═══════════════════════════════════════════ */
+  const inputField = document.getElementById('userInput');
+  inputField.addEventListener('input', () => {
+    inputField.style.height = 'auto';
+    inputField.style.height = Math.min(inputField.scrollHeight, 110) + 'px';
+  });
+
+  inputField.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  /* ═══════════════════════════════════════════
+     SEND MESSAGE
+  ═══════════════════════════════════════════ */
+  async function sendMessage() {
+    const text = inputField.value.trim();
+    if (!text) return;
+
+    // Hide welcome screen on first message
+    const welcome = document.getElementById('welcomeScreen');
+    if (welcome) welcome.style.display = 'none';
+
+    appendUserMessage(text);
+    inputField.value = '';
+    inputField.style.height = 'auto';
+    document.getElementById('sendBtn').disabled = true;
+
+    const typingId = showTyping();
+
+    try {
+      const res = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, session_id: SESSION_ID })
+      });
+
+      const data = await res.json();
+
+      removeTyping(typingId);
+
+      if (!res.ok) {
+        const serverErr = data.error || 'Unknown error';
+        appendBotMessage(`⚠️ Granny hit a snag: ${serverErr}`);
+      } else {
+        appendBotMessage(data.response, data.sources);
+      }
+
+    } catch (err) {
+      removeTyping(typingId);
+      console.error('Fetch error:', err);
+      appendBotMessage(`⚠️ Could not reach Flask: ${err.message}`);
+    }
+
+    document.getElementById('sendBtn').disabled = false;
+    inputField.focus();
+  }
+
+  function sendChip(text) {
+    inputField.value = text;
+    sendMessage();
+  }
+
+  /* ═══════════════════════════════════════════
+     RESET CHAT
+  ═══════════════════════════════════════════ */
+  document.getElementById('resetBtn').addEventListener('click', async () => {
+    try {
+      await fetch(`${API_BASE}/api/reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: SESSION_ID })
+      });
+    } catch (e) { /* silently fail */ }
+
+    const chatArea = document.getElementById('chatArea');
+    chatArea.innerHTML = `
+      <div class="welcome-msg" id="welcomeScreen">
+        <div class="welcome-icon">🌸</div>
+        <div class="welcome-title">What shall we make today?</div>
+        <div class="welcome-sub">
+          Tell Granny what you're looking for — a quick gift, a cozy winter project,<br>or just something cute to start with!
+        </div>
+        <div class="chips-row">
+          <button class="chip" onclick="sendChip('Quick beginner gift idea 🎁')">Quick beginner gift idea 🎁</button>
+          <button class="chip" onclick="sendChip('Cute plushie for a child 🐸')">Cute plushie for a child 🐸</button>
+          <button class="chip" onclick="sendChip('Something cozy for winter ❄️')">Something cozy for winter ❄️</button>
+          <button class="chip" onclick="sendChip('Fun summer bag 👜')">Fun summer bag 👜</button>
+          <button class="chip" onclick="sendChip('I want to make a wearable ✨')">I want to make a wearable ✨</button>
+          <button class="chip" onclick="sendChip('What can I finish in under 2 hours? ⏱')">Finish in under 2 hours ⏱</button>
+        </div>
+      </div>`;
+    showToast('Chat cleared 🌿');
+  });
+
+  /* ═══════════════════════════════════════════
+     APPEND USER MESSAGE
+  ═══════════════════════════════════════════ */
+  function appendUserMessage(text) {
+    const chatArea = document.getElementById('chatArea');
+    const row = document.createElement('div');
+    row.className = 'msg-row user';
+    row.innerHTML = `<div class="bubble user-bubble">${escapeHtml(text)}</div>`;
+    chatArea.appendChild(row);
+    scrollToBottom();
+  }
+
+  /* ═══════════════════════════════════════════
+     APPEND BOT MESSAGE
+  ═══════════════════════════════════════════ */
+  function appendBotMessage(text, sources) {
+    const chatArea = document.getElementById('chatArea');
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+
+    // Format the bot text: bold, newlines, etc.
+    const formattedText = formatBotText(text);
+
+    let sourceCardsHtml = '';
+    if (sources && sources.length > 0) {
+      sourceCardsHtml = `<div style="margin-top:12px;">
+        <div style="font-size:0.76rem;color:var(--brown-light);font-style:italic;margin-bottom:8px;">✨ Patterns retrieved from database:</div>`;
+      sources.forEach(s => {
+        sourceCardsHtml += `
+        <div class="pattern-card">
+          <div class="pattern-card-name">${escapeHtml(s.name)}</div>
+          <div class="pattern-meta">
+            <span class="meta-pill pill-level">${escapeHtml(s.skill_level)}</span>
+            <span class="meta-pill pill-time">⏱ ${escapeHtml(s.estimated_time)}</span>
+            <span class="meta-pill pill-diff">${escapeHtml(s.difficulty)}</span>
+            <span class="meta-pill pill-season">🌿 ${escapeHtml(s.season.replace('_', ' '))}</span>
+          </div>
+        </div>`;
+      });
+      sourceCardsHtml += '</div>';
+    }
+
+    row.innerHTML = `
+      <div class="avatar">👵🏻</div>
+      <div class="bubble bot-bubble">
+        ${formattedText}
+        ${sourceCardsHtml}
+      </div>`;
+
+    chatArea.appendChild(row);
+    scrollToBottom();
+  }
+
+  /* ═══════════════════════════════════════════
+     TYPING INDICATOR
+  ═══════════════════════════════════════════ */
+  let typingCounter = 0;
+
+  function showTyping() {
+    const id = 'typing-' + (++typingCounter);
+    const chatArea = document.getElementById('chatArea');
+    const row = document.createElement('div');
+    row.className = 'typing-row';
+    row.id = id;
+    row.innerHTML = `
+      <div class="avatar">👵🏻</div>
+      <div class="typing-bubble">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <span class="typing-label">stitching your recommendations…</span>
+      </div>`;
+    chatArea.appendChild(row);
+    scrollToBottom();
+    return id;
+  }
+
+  function removeTyping(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  }
+
+  /* ═══════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════ */
+  function scrollToBottom() {
+    const chatArea = document.getElementById('chatArea');
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatBotText(text) {
+    if (!text) return '';
+    // Escape HTML first
+    let t = escapeHtml(text);
+    // Bold: **text**
+    t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Italic: *text*
+    t = t.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    // Line breaks
+    t = t.replace(/\n/g, '<br>');
+    return t;
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>
