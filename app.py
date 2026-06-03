@@ -1,5 +1,5 @@
 """
-Crochet Companion - Flask Backend
+Granny's Guidance - Flask Backend
 RAG-powered crochet pattern recommendation system using LangChain, FAISS, and Gemini Flash.
 """
 
@@ -243,7 +243,7 @@ def health():
 # ─── App Init ─────────────────────────────────────────────────────────────────
 def initialize_app():
     global vectorstore, llm
-    print("Initializing Crochet Companion backend...")
+    print("Initializing Granny's backend...")
     
     vectorstore = init_vector_store()
     
