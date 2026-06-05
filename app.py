@@ -256,7 +256,7 @@ def initialize_app():
     
     print("✅ Backend ready! Granny is here to help.")
 
-
+# Initialize on import (for gunicorn/Render)
+initialize_app()
 if __name__ == "__main__":
-    initialize_app()
     app.run(debug=True, host="0.0.0.0", port=5000)
